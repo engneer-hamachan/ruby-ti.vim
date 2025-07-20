@@ -45,12 +45,7 @@ let g:ruby_ti_config = {
   \ 'min_popup_width': 50,
   \ 'checker_command': 'ruby-ti',
   \ 'enable_animation': 1,
-  \ 'enable_line_highlighting': 1,
-  \ 'colors': {
-  \   'warning_fg': 'Red',
-  \   'error_bg': '#001122',
-  \   'error_fg': '#00ff99'
-  \ }
+  \ 'enable_line_highlighting': 1
 \ }
 ```
 

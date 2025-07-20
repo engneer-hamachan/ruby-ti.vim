@@ -6,13 +6,6 @@ if exists('g:loaded_ruby_ti')
 endif
 let g:loaded_ruby_ti = 1
 
-" Plugin components are loaded automatically via autoload mechanism
-
-" Debug: Check if plugin is loading
-if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-  echo 'Ruby-TI: Plugin loading started'
-endif
-
 " Initialize plugin with deferred setup
 function! s:initialize_ruby_ti()
   try
@@ -21,17 +14,10 @@ function! s:initialize_ruby_ti()
     " Apply user configuration if exists
     if exists('g:ruby_ti_config')
       call ruby_ti#config#update(g:ruby_ti_config)
-      if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-        echo 'Ruby-TI: User config applied: ' . string(g:ruby_ti_config)
-      endif
     endif
     
-    " Setup highlights after config is loaded
+    " Setup highlights
     call ruby_ti#ui#setup_highlights()
-    
-    if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-      echo 'Ruby-TI: Initialization complete'
-    endif
   catch
     echo 'Ruby-TI Error: Failed to initialize - ' . v:exception
   endtry
@@ -72,6 +58,3 @@ function! s:show_config()
     echo 'g:ruby_ti_config: ' . string(g:ruby_ti_config)
   endif
 endfunction
-
-" Command to reload highlights
-command! RubyTiReloadHighlights call ruby_ti#ui#setup_highlights()

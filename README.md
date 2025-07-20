@@ -13,15 +13,26 @@ A modern, modular Vim/Neovim plugin that integrates with the Ruby-TI type checke
 
 ## Installation
 
-1. Copy the plugin files to your Vim configuration directory:
-   ```
-   ~/.vim/vimrc_themes/          (Vim)
-   ~/.config/nvim/vimrc_themes/  (Neovim)
+### Using vim-plug
+
+Add this line to your vimrc/init.vim:
+
+```vim
+Plug 'username/ruby-ti.vim'
+```
+
+Then run `:PlugInstall`
+
+### Manual Installation
+
+1. Clone this repository to your Vim plugin directory:
+   ```bash
+   git clone https://github.com/username/ruby-ti.vim ~/.vim/pack/plugins/start/ruby-ti.vim
    ```
 
-2. Source the main plugin file in your vimrc/init.vim:
-   ```vim
-   source ~/.vim/vimrc_themes/ruby_ti.vim
+2. For Neovim:
+   ```bash
+   git clone https://github.com/username/ruby-ti.vim ~/.local/share/nvim/site/pack/plugins/start/ruby-ti.vim
    ```
 
 ## Configuration
@@ -112,9 +123,6 @@ Enable debug output by setting:
 let g:ruby_ti_debug = 1
 ```
 
-## Migration from Original
-
-If upgrading from the original `type_animation_vimrc`, simply replace the old file with the new modular structure. Configuration is backward compatible.
 
 ## Requirements
 

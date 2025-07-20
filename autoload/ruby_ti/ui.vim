@@ -1,20 +1,11 @@
 " UI management for Ruby-TI plugin
 
 function! ruby_ti#ui#setup_highlights()
-  let colors = ruby_ti#config#get('colors')
-  
-  " Warning highlight for echo messages
-  execute printf('highlight RubyTiWarning ctermfg=%s guifg=%s cterm=bold gui=bold', 
-    \ colors.warning_fg, colors.warning_fg)
-  
-  " Line highlighting for error lines
+  " Define highlights exactly like original
+  highlight RubyTiWarning ctermfg=Yellow guifg=Yellow cterm=bold gui=bold
   highlight MyMatch cterm=underline
-  
-  " Popup window highlights
-  execute printf('highlight ErrorFloat guibg=%s guifg=%s ctermbg=0 ctermfg=108 cterm=bold gui=bold',
-    \ colors.error_bg, colors.error_fg)
-  execute printf('highlight ErrorFloatBorder guibg=%s guifg=%s ctermbg=0 ctermfg=198 cterm=bold gui=bold',
-    \ colors.error_bg, colors.border_fg)
+  highlight ErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
+  highlight ErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
 endfunction
 
 function! ruby_ti#ui#echo_warning(message)

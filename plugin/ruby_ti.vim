@@ -34,6 +34,11 @@ augroup RubyTi
   autocmd BufWritePost *.rb call ruby_ti#checker#run()
   autocmd BufRead *.rb call ruby_ti#checker#run()
   autocmd BufWinEnter *.rb call ruby_ti#checker#run()
-  autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
+  autocmd CursorMoved *.rb call timer_start(50, function('s:delayed_popup_check'))
 augroup END
+
+" Delayed popup check to avoid immediate empty popups
+function! s:delayed_popup_check(timer_id)
+  call ruby_ti#ui#show_popup_if_needed()
+endfunction
 

@@ -49,8 +49,11 @@ endfunction
 function! ruby_ti#ui#show_popup()
   let error_message = ruby_ti#state#get_error_info('message')
   let error_filename = ruby_ti#state#get_error_info('filename')
+  let error_line = ruby_ti#state#get_error_info('line_number')
+  let error_file = ruby_ti#state#get_error_info('file_path')
   
-  if empty(error_message) || empty(error_filename)
+  " Don't show popup if no valid error info
+  if empty(error_message) || empty(error_filename) || error_line <= 0 || empty(error_file)
     return
   endif
   
@@ -122,20 +125,20 @@ function! ruby_ti#ui#show_popup()
 endfunction
 
 function! ruby_ti#ui#hide_popup()
-  if !ruby_ti#state#is_popup_visible()
-    return
-  endif
+  " Stop animation first
+  call ruby_ti#animation#stop()
   
+  " Close popup window if exists
   let window_id = ruby_ti#state#get_popup_window_id()
   if window_id != -1
     try
       call nvim_win_close(window_id, v:true)
     catch
-      " Window might already be closed
+      " Window might already be closed, ignore error
     endtry
   endif
   
-  call ruby_ti#animation#stop()
+  " Always reset popup state regardless of previous state
   call ruby_ti#state#set_popup_window(-1, 0)
 endfunction
 

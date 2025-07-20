@@ -43,3 +43,15 @@ try
 catch
   echo 'Ruby-TI Error: Failed to setup highlights - ' . v:exception
 endtry
+
+" Debug command to test popup
+command! RubyTiTest call s:test_popup()
+function! s:test_popup()
+  call ruby_ti#state#set_error_info({
+    \ 'file_path': expand('%:p'),
+    \ 'line_number': line('.'),
+    \ 'message': 'Test error message',
+    \ 'filename': 'test.rb line:' . line('.')
+  \ })
+  call ruby_ti#ui#show_popup()
+endfunction

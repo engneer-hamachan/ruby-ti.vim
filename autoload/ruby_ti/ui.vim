@@ -45,8 +45,16 @@ function! ruby_ti#ui#show_popup_if_needed()
   let error_line = ruby_ti#state#get_error_info('line_number')
   let error_file = ruby_ti#state#get_error_info('file_path')
   
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo printf('Ruby-TI Debug: line=%d, file=%s, error_line=%d, error_file=%s', 
+      \ current_line, current_file, error_line, error_file)
+  endif
+  
   " Show popup if cursor is on error line in the error file
   if current_line == error_line && current_file == error_file && !ruby_ti#state#is_popup_visible()
+    if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+      echo 'Ruby-TI Debug: Showing popup'
+    endif
     call ruby_ti#ui#show_popup()
   elseif ruby_ti#state#is_popup_visible() && (current_line != error_line || current_file != error_file)
     call ruby_ti#ui#hide_popup()
@@ -57,7 +65,15 @@ function! ruby_ti#ui#show_popup()
   let error_message = ruby_ti#state#get_error_info('message')
   let error_filename = ruby_ti#state#get_error_info('filename')
   
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo printf('Ruby-TI Debug: show_popup called with message="%s", filename="%s"', 
+      \ error_message, error_filename)
+  endif
+  
   if empty(error_message) || empty(error_filename)
+    if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+      echo 'Ruby-TI Debug: Empty message or filename, not showing popup'
+    endif
     return
   endif
   

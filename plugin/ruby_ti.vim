@@ -31,14 +31,22 @@ augroup RubyTi
   autocmd!
   autocmd BufRead *.* call ruby_ti#state#reset()
   autocmd BufWinEnter *.* call ruby_ti#state#reset()
-  autocmd BufWritePost *.rb call ruby_ti#checker#run()
-  autocmd BufRead *.rb call ruby_ti#checker#run()
-  autocmd BufWinEnter *.rb call ruby_ti#checker#run()
+  autocmd BufWritePost *.rb call timer_start(100, function('s:delayed_checker_run'))
+  autocmd BufReadPost *.rb call timer_start(200, function('s:delayed_checker_run'))
+  autocmd BufWinEnter *.rb call timer_start(300, function('s:delayed_checker_run'))
   autocmd CursorMoved *.rb call timer_start(50, function('s:delayed_popup_check'))
 augroup END
 
 " Delayed popup check to avoid immediate empty popups
 function! s:delayed_popup_check(timer_id)
   call ruby_ti#ui#show_popup_if_needed()
+endfunction
+
+" Delayed checker run to avoid running before file is fully loaded
+function! s:delayed_checker_run(timer_id)
+  " Only run if file is fully loaded and readable
+  if filereadable(expand('%')) && line('$') > 0
+    call ruby_ti#checker#run()
+  endif
 endfunction
 

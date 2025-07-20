@@ -18,6 +18,9 @@ function! s:initialize_ruby_ti()
     
     " Setup highlights
     call ruby_ti#ui#setup_highlights()
+    
+    " Setup autocommands after configuration is loaded
+    call s:setup_autocommands()
   catch
     echo 'Ruby-TI Error: Failed to initialize - ' . v:exception
   endtry
@@ -26,16 +29,18 @@ endfunction
 " Defer initialization until VimEnter
 autocmd VimEnter * call s:initialize_ruby_ti()
 
-" Setup autocommands
-augroup RubyTi
-  autocmd!
-  autocmd BufRead *.* call ruby_ti#state#reset()
-  autocmd BufWinEnter *.* call ruby_ti#state#reset()
-  autocmd BufWritePost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
-  autocmd BufReadPost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
-  autocmd BufWinEnter *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
-  autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
-augroup END
+" Setup autocommands  
+function! s:setup_autocommands()
+  augroup RubyTi
+    autocmd!
+    autocmd BufRead *.* call ruby_ti#state#reset()
+    autocmd BufWinEnter *.* call ruby_ti#state#reset()
+    autocmd BufWritePost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+    autocmd BufReadPost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+    autocmd BufWinEnter *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+    autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
+  augroup END
+endfunction
 
 " Manual command to run type checker
 command! RubyTiRun call ruby_ti#checker#run()

@@ -39,18 +39,6 @@ function! ruby_ti#config#set(key, value)
 endfunction
 
 function! ruby_ti#config#update(config_dict)
-  " Deep merge configuration
-  for [key, value] in items(a:config_dict)
-    if key ==# 'colors' && type(value) == v:t_dict
-      " Merge colors dictionary
-      if !has_key(s:config, 'colors') || type(s:config.colors) != v:t_dict
-        let s:config.colors = {}
-      endif
-      call extend(s:config.colors, value, 'force')
-    else
-      " Regular key-value assignment
-      let s:config[key] = value
-    endif
-  endfor
+  call extend(s:config, a:config_dict, 'force')
 endfunction
 

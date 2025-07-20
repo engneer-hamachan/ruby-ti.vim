@@ -29,6 +29,16 @@ catch
   echo 'Ruby-TI Error: Failed to initialize state - ' . v:exception
 endtry
 
+" Define highlights (after config is loaded)
+try
+  call ruby_ti#ui#setup_highlights()
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo 'Ruby-TI: Highlights setup successfully'
+  endif
+catch
+  echo 'Ruby-TI Error: Failed to setup highlights - ' . v:exception
+endtry
+
 " Setup autocommands
 augroup RubyTi
   autocmd!
@@ -39,16 +49,6 @@ augroup RubyTi
   autocmd BufWinEnter *.rb call ruby_ti#checker#run()
   autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
 augroup END
-
-" Define highlights
-try
-  call ruby_ti#ui#setup_highlights()
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo 'Ruby-TI: Highlights setup successfully'
-  endif
-catch
-  echo 'Ruby-TI Error: Failed to setup highlights - ' . v:exception
-endtry
 
 " Debug command to test popup
 command! RubyTiTest call s:test_popup()
@@ -69,3 +69,6 @@ function! s:show_config()
   echo 'colors: ' . string(ruby_ti#config#get('colors', {}))
   echo 'animation_speed: ' . ruby_ti#config#get('animation_speed', 7)
 endfunction
+
+" Command to reload highlights
+command! RubyTiReloadHighlights call ruby_ti#ui#setup_highlights()

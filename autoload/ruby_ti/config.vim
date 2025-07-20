@@ -46,5 +46,10 @@ endfunction
 
 function! ruby_ti#config#update(config_dict)
   call extend(s:config, a:config_dict, 'force')
+  
+  " Handle nested colors config specially
+  if has_key(a:config_dict, 'colors')
+    call extend(s:config.colors, a:config_dict.colors, 'force')
+  endif
 endfunction
 

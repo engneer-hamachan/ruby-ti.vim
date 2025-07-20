@@ -2,7 +2,7 @@
 
 function! ruby_ti#ui#setup_highlights()
   highlight RubyTiWarning ctermfg=Yellow guifg=Yellow cterm=bold gui=bold
-  highlight MyMatch cterm=underline ctermbg=214 guibg=Orange
+  highlight MyMatch cterm=underline gui=undercurl guisp=Orange
   highlight ErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
   highlight ErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
 endfunction

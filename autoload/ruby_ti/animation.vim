@@ -101,10 +101,10 @@ endfunction
 
 function! s:create_content_line(symbol, text, inner_width)
   let border_char = ruby_ti#config#get('popup_style').border_chars.vertical
-  let content = a:symbol . ' ' . a:text
-  let padding_length = a:inner_width - len(content) - 0
+  let symbol_text = a:symbol . ' '
+  let padding_length = a:inner_width - len(symbol_text . a:text) - 0
   let padding = padding_length > 0 ? repeat(' ', padding_length) : ''
-  return border_char . ' ' . content . padding . border_char
+  return border_char . ' ' . symbol_text . a:text . padding . border_char
 endfunction
 
 function! s:is_buffer_valid(buffer_id)

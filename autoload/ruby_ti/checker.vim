@@ -69,9 +69,7 @@ function! s:on_checker_complete(job_id, data, event)
       \ error_info.line_number, error_info.file_path, error_info.message)
   endif
   
-  " Display warning message
-  let warning_message = error_info.filename . ' ' . error_info.message
-  call ruby_ti#ui#echo_warning(warning_message)
+  " Skip status line message display
   
   " Apply visual feedback if error is in current file
   if current_file ==# error_info.file_path

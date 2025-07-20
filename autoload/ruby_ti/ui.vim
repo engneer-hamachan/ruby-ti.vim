@@ -199,15 +199,15 @@ function! s:create_popup_frame(popup_width, inner_width)
   let header = chars.top_left . repeat(chars.horizontal, 3) . ' 💎 MRUBY TYPE ANALYSIS 💎 ' . repeat(chars.horizontal, a:inner_width - 31) . chars.top_right
   
   let footer_content = chars.footer_left . ' ' . config.footer . ' ' . chars.footer_right
-  let footer_padding_length = a:inner_width - len(footer_content) - 14
+  let footer_padding_length = a:inner_width - 15 - len(config.footer)
   let footer_padding = footer_padding_length > 0 ? repeat(chars.horizontal, footer_padding_length) : ''
   let footer_line = chars.bottom_left . footer_padding . footer_content . repeat(chars.horizontal, 10) . chars.bottom_right
   
   let separator = chars.separator_left . repeat(chars.horizontal, a:inner_width - 1) . chars.separator_right
   
   " Create empty content lines (will be filled by animation)
-  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol) - 0) . chars.vertical
-  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol) - 0) . chars.vertical
+  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol . ' ') - 0) . chars.vertical
+  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol . ' ') - 0) . chars.vertical
   
   return [header, empty_error, separator, empty_file, footer_line]
 endfunction

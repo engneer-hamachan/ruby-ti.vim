@@ -81,22 +81,37 @@ function! ruby_ti#ui#show_popup()
   call ruby_ti#animation#stop()
   
   " Create buffer for popup
-  let buffer_id = nvim_create_buf(v:false, v:true)
-  if buffer_id == -1
-    call ruby_ti#ui#echo_warning('Failed to create popup buffer')
+  try
+    let buffer_id = nvim_create_buf(v:false, v:true)
+    if buffer_id == -1
+      call ruby_ti#ui#echo_warning('Failed to create popup buffer')
+      return
+    endif
+  catch
+    call ruby_ti#ui#echo_warning('nvim_create_buf failed: ' . v:exception)
     return
-  endif
+  endtry
   
   " Calculate popup dimensions
-  let dimensions = s:calculate_popup_dimensions(error_message, error_filename)
+  try
+    let dimensions = s:calculate_popup_dimensions(error_message, error_filename)
+  catch
+    call ruby_ti#ui#echo_warning('Failed to calculate dimensions: ' . v:exception)
+    return
+  endtry
   
   " Create popup frame
-  let frame_content = s:create_popup_frame(dimensions.width, dimensions.inner_width)
+  try
+    let frame_content = s:create_popup_frame(dimensions.width, dimensions.inner_width)
+  catch
+    call ruby_ti#ui#echo_warning('Failed to create frame: ' . v:exception)
+    return
+  endtry
   
   try
     call nvim_buf_set_lines(buffer_id, 0, -1, v:true, frame_content)
   catch
-    call ruby_ti#ui#echo_warning('Failed to set popup content')
+    call ruby_ti#ui#echo_warning('Failed to set popup content: ' . v:exception)
     return
   endtry
   
@@ -119,7 +134,7 @@ function! ruby_ti#ui#show_popup()
     call nvim_win_set_option(window_id, 'winhl', 'Normal:ErrorFloat,FloatBorder:ErrorFloatBorder')
     call ruby_ti#state#set_popup_window(window_id, 1)
   catch
-    call ruby_ti#ui#echo_warning('Failed to open popup window')
+    call ruby_ti#ui#echo_warning('Failed to open popup window: ' . v:exception)
     return
   endtry
   
@@ -181,7 +196,7 @@ function! s:create_popup_frame(popup_width, inner_width)
   let footer_content = chars.footer_left . ' ' . config.footer . ' ' . chars.footer_right
   let footer_padding_length = inner_width - len(footer_content) - 14
   let footer_padding = footer_padding_length > 0 ? repeat(chars.horizontal, footer_padding_length) : ''
-  let footer = chars.bottom_left . footer_padding . footer_content . repeat(chars.horizontal, 10) . chars.bottom_right
+  let footer_line = chars.bottom_left . footer_padding . footer_content . repeat(chars.horizontal, 10) . chars.bottom_right
   
   let separator = chars.separator_left . repeat(chars.horizontal, inner_width - 1) . chars.separator_right
   
@@ -189,5 +204,5 @@ function! s:create_popup_frame(popup_width, inner_width)
   let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', inner_width - len(config.error_symbol) - 3) . chars.vertical
   let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', inner_width - len(config.file_symbol) - 3) . chars.vertical
   
-  return [header, empty_error, separator, empty_file, footer]
+  return [header, empty_error, separator, empty_file, footer_line]
 endfunction

@@ -47,11 +47,11 @@ function! ruby_ti#state#clear_error_info()
 endfunction
 
 function! ruby_ti#state#is_popup_visible()
-  return s:state['popup_visible']
+  return get(s:state, 'popup_visible', 0)
 endfunction
 
 function! ruby_ti#state#get_popup_window_id()
-  return s:state['popup_window_id']
+  return get(s:state, 'popup_window_id', -1)
 endfunction
 
 function! ruby_ti#state#set_popup_window(window_id, visible)
@@ -61,8 +61,8 @@ endfunction
 
 function! ruby_ti#state#get_typing_state()
   return {
-    \ 'position': s:state['typing_position'],
-    \ 'timer_id': s:state['typing_timer_id']
+    \ 'position': get(s:state, 'typing_position', 0),
+    \ 'timer_id': get(s:state, 'typing_timer_id', -1)
   \ }
 endfunction
 
@@ -81,17 +81,17 @@ function! ruby_ti#state#reset()
   execute 'match none'
   
   " Close popup if open
-  if s:state['popup_visible'] && s:state['popup_window_id'] != -1
+  if get(s:state, 'popup_visible', 0) && get(s:state, 'popup_window_id', -1) != -1
     try
-      call nvim_win_close(s:state['popup_window_id'], v:true)
+      call nvim_win_close(get(s:state, 'popup_window_id', -1), v:true)
     catch
       " Window might already be closed
     endtry
   endif
   
   " Stop animation timer if running
-  if s:state['typing_timer_id'] != -1
-    call timer_stop(s:state['typing_timer_id'])
+  if get(s:state, 'typing_timer_id', -1) != -1
+    call timer_stop(get(s:state, 'typing_timer_id', -1))
   endif
   
   " Reset state

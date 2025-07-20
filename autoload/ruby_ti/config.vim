@@ -9,6 +9,7 @@ let s:config = {
   \ 'checker_command': 'ti',
   \ 'enable_animation': 1,
   \ 'enable_line_highlighting': 1,
+  \ 'auto_run': 1,
   \ 'popup_style': {
   \   'title': '🔍 Ruby Type Error',
   \   'footer': 'RUBY-TI',

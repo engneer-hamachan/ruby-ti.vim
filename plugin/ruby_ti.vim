@@ -31,22 +31,13 @@ augroup RubyTi
   autocmd!
   autocmd BufRead *.* call ruby_ti#state#reset()
   autocmd BufWinEnter *.* call ruby_ti#state#reset()
-  autocmd BufWritePost *.rb call timer_start(0, function('s:delayed_checker_run'))
-  autocmd BufReadPost *.rb call timer_start(0, function('s:delayed_checker_run'))
-  autocmd BufWinEnter *.rb call timer_start(0, function('s:delayed_checker_run'))
-  autocmd CursorMoved *.rb call timer_start(0, function('s:delayed_popup_check'))
+  autocmd BufWritePost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+  autocmd BufReadPost *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+  autocmd BufWinEnter *.rb if ruby_ti#config#get('auto_run', 1) | call ruby_ti#checker#run() | endif
+  autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
 augroup END
 
-" Delayed popup check to avoid immediate empty popups
-function! s:delayed_popup_check(timer_id)
-  call ruby_ti#ui#show_popup_if_needed()
-endfunction
+" Manual command to run type checker
+command! RubyTiRun call ruby_ti#checker#run()
 
-" Delayed checker run to avoid running before file is fully loaded
-function! s:delayed_checker_run(timer_id)
-  " Only run if file is fully loaded and readable
-  if filereadable(expand('%')) && line('$') > 0
-    call ruby_ti#checker#run()
-  endif
-endfunction
 

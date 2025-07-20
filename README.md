@@ -1,3 +1,7 @@
+# 注意
+鋭意開発中のRuby型検査器用のVim Pluginです。
+実行には未公開のソフトが必要なので、まだ使えません。
+
 # Ruby-TI Vim Plugin
 
 A modern, modular Vim/Neovim plugin that integrates with the Ruby-TI type checker to provide real-time visual feedback with animated error messages.

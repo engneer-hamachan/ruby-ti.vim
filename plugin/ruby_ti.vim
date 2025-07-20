@@ -67,8 +67,16 @@ endfunction
 command! RubyTiConfig call s:show_config()
 function! s:show_config()
   echo 'enable_line_highlighting: ' . ruby_ti#config#get('enable_line_highlighting', 1)
-  echo 'colors: ' . string(ruby_ti#config#get('colors', {}))
+  let colors = ruby_ti#config#get('colors', {})
+  echo 'colors type: ' . type(colors)
+  echo 'colors: ' . string(colors)
+  if type(colors) == v:t_dict
+    echo 'colors keys: ' . string(keys(colors))
+  endif
   echo 'animation_speed: ' . ruby_ti#config#get('animation_speed', 7)
+  if exists('g:ruby_ti_config')
+    echo 'g:ruby_ti_config: ' . string(g:ruby_ti_config)
+  endif
 endfunction
 
 " Command to reload highlights

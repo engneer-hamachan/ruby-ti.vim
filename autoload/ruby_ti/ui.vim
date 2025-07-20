@@ -7,11 +7,11 @@ function! ruby_ti#ui#setup_highlights()
     echo 'Ruby-TI Debug: colors config = ' . string(colors)
   endif
   
-  " Get colors with defaults
-  let warning_fg = get(colors, 'warning_fg', 'Yellow')
-  let error_bg = get(colors, 'error_bg', '#000a1a')
-  let error_fg = get(colors, 'error_fg', '#00ff88')
-  let border_fg = get(colors, 'border_fg', '#ff0088')
+  " Get colors with defaults - safe access
+  let warning_fg = type(colors) == v:t_dict && has_key(colors, 'warning_fg') ? colors['warning_fg'] : 'Yellow'
+  let error_bg = type(colors) == v:t_dict && has_key(colors, 'error_bg') ? colors['error_bg'] : '#000a1a'
+  let error_fg = type(colors) == v:t_dict && has_key(colors, 'error_fg') ? colors['error_fg'] : '#00ff88'
+  let border_fg = type(colors) == v:t_dict && has_key(colors, 'border_fg') ? colors['border_fg'] : '#ff0088'
   
   if exists('g:ruby_ti_debug') && g:ruby_ti_debug
     echo printf('Ruby-TI Debug: Using colors - warning_fg=%s, error_bg=%s, error_fg=%s, border_fg=%s', warning_fg, error_bg, error_fg, border_fg)

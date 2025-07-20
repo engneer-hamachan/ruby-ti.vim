@@ -20,6 +20,12 @@ function! ruby_ti#checker#run()
   " Get checker command
   let command = ruby_ti#config#get('checker_command', 'ti')
   
+  " Check if command exists
+  if !executable(command)
+    call ruby_ti#ui#echo_warning('Type checker command not found: ' . command . '. Please install Ruby-TI or set g:ruby_ti_config.checker_command')
+    return
+  endif
+  
   " Start type checking job
   let job_options = {
     \ 'on_stdout': function('s:on_checker_complete'),

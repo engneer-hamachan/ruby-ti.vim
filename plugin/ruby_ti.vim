@@ -8,8 +8,20 @@ let g:loaded_ruby_ti = 1
 
 " Plugin components are loaded automatically via autoload mechanism
 
+" Debug: Check if plugin is loading
+if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+  echo 'Ruby-TI: Plugin loading started'
+endif
+
 " Initialize plugin
-call ruby_ti#state#init()
+try
+  call ruby_ti#state#init()
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo 'Ruby-TI: State initialized successfully'
+  endif
+catch
+  echo 'Ruby-TI Error: Failed to initialize state - ' . v:exception
+endtry
 
 " Setup autocommands
 augroup RubyTi
@@ -23,4 +35,11 @@ augroup RubyTi
 augroup END
 
 " Define highlights
-call ruby_ti#ui#setup_highlights()
+try
+  call ruby_ti#ui#setup_highlights()
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo 'Ruby-TI: Highlights setup successfully'
+  endif
+catch
+  echo 'Ruby-TI Error: Failed to setup highlights - ' . v:exception
+endtry

@@ -27,12 +27,6 @@ let s:config = {
   \     'footer_right': '◁'
   \   }
   \ },
-  \ 'colors': {
-  \   'warning_fg': 'Yellow',
-  \   'error_bg': '#000a1a',
-  \   'error_fg': '#00ff88',
-  \   'border_fg': '#ff0088'
-  \ }
 \ }
 
 function! ruby_ti#config#get(key, ...)

@@ -98,4 +98,5 @@ function! ruby_ti#state#reset()
   let s:state['popup_visible'] = 0
   let s:state['popup_window_id'] = -1
   call ruby_ti#state#reset_typing_state()
+  call ruby_ti#state#clear_error_info()
 endfunction

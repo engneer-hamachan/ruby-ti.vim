@@ -64,10 +64,6 @@ function! s:on_checker_complete(job_id, data, event)
   " Store error information
   call ruby_ti#state#set_error_info(error_info)
   
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo printf('Ruby-TI Debug: Error stored - line=%d, file=%s, message=%s', 
-      \ error_info.line_number, error_info.file_path, error_info.message)
-  endif
   
   " Skip status line message display
   

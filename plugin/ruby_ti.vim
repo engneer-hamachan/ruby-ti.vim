@@ -37,24 +37,3 @@ augroup RubyTi
   autocmd CursorMoved *.rb call ruby_ti#ui#show_popup_if_needed()
 augroup END
 
-" Debug command to test popup
-command! RubyTiTest call s:test_popup()
-function! s:test_popup()
-  call ruby_ti#state#set_error_info({
-    \ 'file_path': expand('%:p'),
-    \ 'line_number': line('.'),
-    \ 'message': 'Test error message',
-    \ 'filename': 'test.rb line:' . line('.')
-  \ })
-  call ruby_ti#ui#show_popup()
-endfunction
-
-" Debug command to show config
-command! RubyTiConfig call s:show_config()
-function! s:show_config()
-  echo 'enable_line_highlighting: ' . ruby_ti#config#get('enable_line_highlighting', 1)
-  echo 'animation_speed: ' . ruby_ti#config#get('animation_speed', 7)
-  if exists('g:ruby_ti_config')
-    echo 'g:ruby_ti_config: ' . string(g:ruby_ti_config)
-  endif
-endfunction

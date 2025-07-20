@@ -42,8 +42,7 @@ You can customize the plugin by setting `g:ruby_ti_config` in your vimrc:
 ```vim
 let g:ruby_ti_config = {
   \ 'animation_speed': 10,
-  \ 'min_popup_width': 50,
-  \ 'checker_command': 'ruby-ti',
+  \ 'checker_command': 'ti',
   \ 'enable_animation': 1,
   \ 'enable_line_highlighting': 1
 \ }
@@ -54,9 +53,6 @@ let g:ruby_ti_config = {
 | Option | Default | Description |
 |--------|---------|-------------|
 | `animation_speed` | `7` | Timer delay in milliseconds for typing animation |
-| `min_popup_width` | `40` | Minimum width for popup window |
-| `popup_offset_col` | `-2` | Column offset for popup positioning |
-| `popup_offset_row` | `1` | Row offset for popup positioning |
 | `checker_command` | `'ti'` | Command to run Ruby-TI type checker |
 | `enable_animation` | `1` | Enable/disable typing animation |
 | `enable_line_highlighting` | `1` | Enable/disable error line highlighting |
@@ -111,12 +107,6 @@ The plugin automatically activates for Ruby files (*.rb) and provides:
 2. **No popup appearing**: Check that error line matches cursor position
 3. **Animation not working**: Verify Neovim version supports timer functions
 
-### Debug Mode
-
-Enable debug output by setting:
-```vim
-let g:ruby_ti_debug = 1
-```
 
 
 ## Requirements

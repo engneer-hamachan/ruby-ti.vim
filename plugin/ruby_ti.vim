@@ -29,8 +29,8 @@ autocmd VimEnter * call s:initialize_ruby_ti()
 " Setup autocommands
 augroup RubyTi
   autocmd!
-  autocmd BufRead *.* call ruby_ti#state#reset()
-  autocmd BufWinEnter *.* call ruby_ti#state#reset()
+  autocmd BufRead *.* call ruby_ti#ui#hide_popup() | call ruby_ti#state#reset()
+  autocmd BufWinEnter *.* call ruby_ti#ui#hide_popup() | call ruby_ti#state#reset()
   autocmd BufWritePost *.rb call timer_start(100, function('s:delayed_checker_run'))
   autocmd BufReadPost *.rb call timer_start(200, function('s:delayed_checker_run'))
   autocmd BufWinEnter *.rb call timer_start(300, function('s:delayed_checker_run'))

@@ -1,39 +1,33 @@
 " UI management for Ruby-TI plugin
 
 function! ruby_ti#ui#setup_highlights()
-  let colors = ruby_ti#config#get('colors', {})
+  " Get user colors directly from global variable
+  let warning_fg = 'Yellow'
+  let error_bg = '#000a1a'
+  let error_fg = '#00ff88'
+  let border_fg = '#ff0088'
   
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo 'Ruby-TI Debug: colors config = ' . string(colors)
+  if exists('g:ruby_ti_config') && has_key(g:ruby_ti_config, 'colors')
+    let user_colors = g:ruby_ti_config.colors
+    if has_key(user_colors, 'warning_fg')
+      let warning_fg = user_colors.warning_fg
+    endif
+    if has_key(user_colors, 'error_bg')
+      let error_bg = user_colors.error_bg
+    endif
+    if has_key(user_colors, 'error_fg')
+      let error_fg = user_colors.error_fg
+    endif
+    if has_key(user_colors, 'border_fg')
+      let border_fg = user_colors.border_fg
+    endif
   endif
   
-  " Get colors with defaults - safe access
-  let warning_fg = type(colors) == v:t_dict && has_key(colors, 'warning_fg') ? colors['warning_fg'] : 'Yellow'
-  let error_bg = type(colors) == v:t_dict && has_key(colors, 'error_bg') ? colors['error_bg'] : '#000a1a'
-  let error_fg = type(colors) == v:t_dict && has_key(colors, 'error_fg') ? colors['error_fg'] : '#00ff88'
-  let border_fg = type(colors) == v:t_dict && has_key(colors, 'border_fg') ? colors['border_fg'] : '#ff0088'
-  
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo printf('Ruby-TI Debug: Using colors - warning_fg=%s, error_bg=%s, error_fg=%s, border_fg=%s', warning_fg, error_bg, error_fg, border_fg)
-  endif
-  
-  " Clear existing highlights first
-  try
-    silent! highlight clear RubyTiWarning
-    silent! highlight clear ErrorFloat  
-    silent! highlight clear ErrorFloatBorder
-  catch
-  endtry
-  
-  " Define highlights with user colors - use explicit commands
+  " Define highlights
   execute 'highlight RubyTiWarning ctermfg=' . warning_fg . ' guifg=' . warning_fg . ' cterm=bold gui=bold'
   execute 'highlight MyMatch cterm=underline'
   execute 'highlight ErrorFloat guibg=' . error_bg . ' guifg=' . error_fg . ' ctermbg=0 ctermfg=108 cterm=bold gui=bold'
   execute 'highlight ErrorFloatBorder guibg=' . error_bg . ' guifg=' . border_fg . ' ctermbg=0 ctermfg=198 cterm=bold gui=bold'
-  
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo 'Ruby-TI Debug: Highlights set successfully'
-  endif
 endfunction
 
 function! ruby_ti#ui#echo_warning(message)

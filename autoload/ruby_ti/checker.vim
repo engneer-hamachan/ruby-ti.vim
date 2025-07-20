@@ -71,11 +71,8 @@ function! s:on_checker_complete(job_id, data, event)
   if current_file ==# error_info.file_path
     call ruby_ti#ui#highlight_error_line(error_info.line_number)
     
-    " Show popup if cursor is on error line
-    let current_line = line('.')
-    if current_line == error_info.line_number
-      call ruby_ti#ui#show_popup()
-    endif
+    " Show popup if cursor is on error line (use the safe check function)
+    call ruby_ti#ui#show_popup_if_needed()
   endif
 endfunction
 

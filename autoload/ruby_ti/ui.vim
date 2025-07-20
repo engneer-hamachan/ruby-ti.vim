@@ -7,21 +7,27 @@ function! ruby_ti#ui#setup_highlights()
   let error_fg = '#00ff88'
   let border_fg = '#ff0088'
   
-  if exists('g:ruby_ti_config') && has_key(g:ruby_ti_config, 'colors')
-    let user_colors = g:ruby_ti_config.colors
-    if has_key(user_colors, 'warning_fg')
-      let warning_fg = user_colors.warning_fg
+  try
+    if exists('g:ruby_ti_config') && type(g:ruby_ti_config) == v:t_dict && has_key(g:ruby_ti_config, 'colors')
+      let user_colors = g:ruby_ti_config['colors']
+      if type(user_colors) == v:t_dict
+        if has_key(user_colors, 'warning_fg')
+          let warning_fg = user_colors['warning_fg']
+        endif
+        if has_key(user_colors, 'error_bg')
+          let error_bg = user_colors['error_bg']
+        endif
+        if has_key(user_colors, 'error_fg')
+          let error_fg = user_colors['error_fg']
+        endif
+        if has_key(user_colors, 'border_fg')
+          let border_fg = user_colors['border_fg']
+        endif
+      endif
     endif
-    if has_key(user_colors, 'error_bg')
-      let error_bg = user_colors.error_bg
-    endif
-    if has_key(user_colors, 'error_fg')
-      let error_fg = user_colors.error_fg
-    endif
-    if has_key(user_colors, 'border_fg')
-      let border_fg = user_colors.border_fg
-    endif
-  endif
+  catch
+    " Ignore errors and use defaults
+  endtry
   
   " Define highlights
   execute 'highlight RubyTiWarning ctermfg=' . warning_fg . ' guifg=' . warning_fg . ' cterm=bold gui=bold'

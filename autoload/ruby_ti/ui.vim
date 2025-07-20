@@ -3,8 +3,8 @@
 function! ruby_ti#ui#setup_highlights()
   highlight RubyTiWarning ctermfg=Yellow guifg=Yellow cterm=bold gui=bold
   highlight RubyTiMatch cterm=underline
-  highlight ErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
-  highlight ErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
+  highlight RubyTiErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
+  highlight RubyTiErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
 endfunction
 
 function! ruby_ti#ui#echo_warning(message)
@@ -116,7 +116,7 @@ function! ruby_ti#ui#show_popup()
   " Open popup window
   try
     let window_id = nvim_open_win(buffer_id, 0, popup_options)
-    call nvim_win_set_option(window_id, 'winhl', 'Normal:ErrorFloat,FloatBorder:ErrorFloatBorder')
+    call nvim_win_set_option(window_id, 'winhl', 'Normal:RubyTiErrorFloat,FloatBorder:RubyTiErrorFloatBorder')
     call ruby_ti#state#set_popup_window(window_id, 1)
   catch
     " If popup creation fails, ensure state is clean

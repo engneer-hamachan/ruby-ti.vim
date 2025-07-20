@@ -36,13 +36,18 @@ function! ruby_ti#ui#show_popup_if_needed()
   let error_file = ruby_ti#state#get_error_info('file_path')
   let error_message = ruby_ti#state#get_error_info('message')
   
+  " Always hide popup if not on error line or no valid error
+  if ruby_ti#state#is_popup_visible() && 
+     \ (current_line != error_line || error_line <= 0 || empty(error_message))
+    call ruby_ti#ui#hide_popup()
+    return
+  endif
+  
   " Show popup only if we have valid error info and cursor is on error line
   if current_line == error_line && current_file == error_file && 
      \ error_line > 0 && !empty(error_message) && !empty(error_file) &&
      \ !ruby_ti#state#is_popup_visible()
     call ruby_ti#ui#show_popup()
-  elseif ruby_ti#state#is_popup_visible() && current_line != error_line
-    call ruby_ti#ui#hide_popup()
   endif
 endfunction
 
@@ -114,7 +119,8 @@ function! ruby_ti#ui#show_popup()
     call nvim_win_set_option(window_id, 'winhl', 'Normal:ErrorFloat,FloatBorder:ErrorFloatBorder')
     call ruby_ti#state#set_popup_window(window_id, 1)
   catch
-    call ruby_ti#ui#echo_warning('Failed to open popup window: ' . v:exception)
+    " If popup creation fails, ensure state is clean
+    call ruby_ti#state#set_popup_window(-1, 0)
     return
   endtry
   

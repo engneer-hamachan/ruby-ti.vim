@@ -187,22 +187,27 @@ function! s:create_popup_frame(popup_width, inner_width)
   let config = ruby_ti#config#get('popup_style')
   let chars = config.border_chars
   
+  " Validate parameters
+  if a:inner_width <= 0
+    throw 'Invalid inner_width: ' . a:inner_width
+  endif
+  
   " Create frame components
-  let title_padding_length = inner_width - len(config.title) - 1
+  let title_padding_length = a:inner_width - len(config.title) - 1
   let title_padding = title_padding_length > 0 ? repeat(chars.horizontal, title_padding_length) : ''
   
   let header = chars.top_left . chars.horizontal . chars.horizontal . chars.horizontal . ' ' . config.title . ' ' . title_padding . chars.top_right
   
   let footer_content = chars.footer_left . ' ' . config.footer . ' ' . chars.footer_right
-  let footer_padding_length = inner_width - len(footer_content) - 14
+  let footer_padding_length = a:inner_width - len(footer_content) - 14
   let footer_padding = footer_padding_length > 0 ? repeat(chars.horizontal, footer_padding_length) : ''
   let footer_line = chars.bottom_left . footer_padding . footer_content . repeat(chars.horizontal, 10) . chars.bottom_right
   
-  let separator = chars.separator_left . repeat(chars.horizontal, inner_width - 1) . chars.separator_right
+  let separator = chars.separator_left . repeat(chars.horizontal, a:inner_width - 1) . chars.separator_right
   
   " Create empty content lines (will be filled by animation)
-  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', inner_width - len(config.error_symbol) - 3) . chars.vertical
-  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', inner_width - len(config.file_symbol) - 3) . chars.vertical
+  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol) - 3) . chars.vertical
+  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol) - 3) . chars.vertical
   
   return [header, empty_error, separator, empty_file, footer_line]
 endfunction

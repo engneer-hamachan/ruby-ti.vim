@@ -77,8 +77,12 @@ function! s:on_checker_complete(job_id, data, event)
 endfunction
 
 function! s:on_checker_exit(job_id, exit_code, event)
-  " Handle job completion if needed
-  " Currently no special handling required
+  " If no error was found (or no valid error was parsed), clear highlights
+  let error_info = ruby_ti#state#get_error_info('message')
+  if empty(error_info)
+    call ruby_ti#ui#highlight_error_line(-1)
+    call ruby_ti#ui#hide_popup()
+  endif
 endfunction
 
 function! s:parse_checker_output(output)

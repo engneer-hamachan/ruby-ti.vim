@@ -48,7 +48,3 @@ function! ruby_ti#config#update(config_dict)
   call extend(s:config, a:config_dict, 'force')
 endfunction
 
-" Allow user to override configuration
-if exists('g:ruby_ti_config')
-  call ruby_ti#config#update(g:ruby_ti_config)
-endif

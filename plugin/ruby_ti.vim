@@ -16,6 +16,12 @@ endif
 " Initialize plugin
 try
   call ruby_ti#state#init()
+  
+  " Apply user configuration if exists
+  if exists('g:ruby_ti_config')
+    call ruby_ti#config#update(g:ruby_ti_config)
+  endif
+  
   if exists('g:ruby_ti_debug') && g:ruby_ti_debug
     echo 'Ruby-TI: State initialized successfully'
   endif
@@ -54,4 +60,12 @@ function! s:test_popup()
     \ 'filename': 'test.rb line:' . line('.')
   \ })
   call ruby_ti#ui#show_popup()
+endfunction
+
+" Debug command to show config
+command! RubyTiConfig call s:show_config()
+function! s:show_config()
+  echo 'enable_line_highlighting: ' . ruby_ti#config#get('enable_line_highlighting', 1)
+  echo 'colors: ' . string(ruby_ti#config#get('colors', {}))
+  echo 'animation_speed: ' . ruby_ti#config#get('animation_speed', 7)
 endfunction

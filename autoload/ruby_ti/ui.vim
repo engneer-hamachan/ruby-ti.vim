@@ -1,11 +1,19 @@
 " UI management for Ruby-TI plugin
 
 function! ruby_ti#ui#setup_highlights()
-  " Define highlights exactly like original
-  highlight RubyTiWarning ctermfg=Yellow guifg=Yellow cterm=bold gui=bold
+  let colors = ruby_ti#config#get('colors', {})
+  
+  " Get colors with defaults
+  let warning_fg = get(colors, 'warning_fg', 'Yellow')
+  let error_bg = get(colors, 'error_bg', '#000a1a')
+  let error_fg = get(colors, 'error_fg', '#00ff88')
+  let border_fg = get(colors, 'border_fg', '#ff0088')
+  
+  " Define highlights with user colors
+  execute printf('highlight RubyTiWarning ctermfg=%s guifg=%s cterm=bold gui=bold', warning_fg, warning_fg)
   highlight MyMatch cterm=underline
-  highlight ErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
-  highlight ErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
+  execute printf('highlight ErrorFloat guibg=%s guifg=%s ctermbg=0 ctermfg=108 cterm=bold gui=bold', error_bg, error_fg)
+  execute printf('highlight ErrorFloatBorder guibg=%s guifg=%s ctermbg=0 ctermfg=198 cterm=bold gui=bold', error_bg, border_fg)
 endfunction
 
 function! ruby_ti#ui#echo_warning(message)

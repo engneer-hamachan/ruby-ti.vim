@@ -47,7 +47,7 @@ function! ruby_ti#checker#run()
 endfunction
 
 function! s:on_checker_complete(job_id, data, event)
-  let output = a:data
+  let output = join(a:data, "")
   let current_file = expand('%@:p')
   
   " Skip if no meaningful output

@@ -13,31 +13,32 @@ if exists('g:ruby_ti_debug') && g:ruby_ti_debug
   echo 'Ruby-TI: Plugin loading started'
 endif
 
-" Initialize plugin
-try
-  call ruby_ti#state#init()
-  
-  " Apply user configuration if exists
-  if exists('g:ruby_ti_config')
-    call ruby_ti#config#update(g:ruby_ti_config)
-  endif
-  
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo 'Ruby-TI: State initialized successfully'
-  endif
-catch
-  echo 'Ruby-TI Error: Failed to initialize state - ' . v:exception
-endtry
+" Initialize plugin with deferred setup
+function! s:initialize_ruby_ti()
+  try
+    call ruby_ti#state#init()
+    
+    " Apply user configuration if exists
+    if exists('g:ruby_ti_config')
+      call ruby_ti#config#update(g:ruby_ti_config)
+      if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+        echo 'Ruby-TI: User config applied: ' . string(g:ruby_ti_config)
+      endif
+    endif
+    
+    " Setup highlights after config is loaded
+    call ruby_ti#ui#setup_highlights()
+    
+    if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+      echo 'Ruby-TI: Initialization complete'
+    endif
+  catch
+    echo 'Ruby-TI Error: Failed to initialize - ' . v:exception
+  endtry
+endfunction
 
-" Define highlights (after config is loaded)
-try
-  call ruby_ti#ui#setup_highlights()
-  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo 'Ruby-TI: Highlights setup successfully'
-  endif
-catch
-  echo 'Ruby-TI Error: Failed to setup highlights - ' . v:exception
-endtry
+" Defer initialization until VimEnter
+autocmd VimEnter * call s:initialize_ruby_ti()
 
 " Setup autocommands
 augroup RubyTi

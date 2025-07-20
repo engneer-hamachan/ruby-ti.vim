@@ -14,22 +14,26 @@ function! ruby_ti#ui#setup_highlights()
   let border_fg = get(colors, 'border_fg', '#ff0088')
   
   if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-    echo printf('Ruby-TI Debug: warning_fg=%s, error_bg=%s, error_fg=%s, border_fg=%s', warning_fg, error_bg, error_fg, border_fg)
+    echo printf('Ruby-TI Debug: Using colors - warning_fg=%s, error_bg=%s, error_fg=%s, border_fg=%s', warning_fg, error_bg, error_fg, border_fg)
   endif
   
-  " Define highlights with user colors
+  " Clear existing highlights first
   try
-    execute printf('highlight RubyTiWarning ctermfg=%s guifg=%s cterm=bold gui=bold', warning_fg, warning_fg)
-    highlight MyMatch cterm=underline
-    execute printf('highlight ErrorFloat guibg=%s guifg=%s ctermbg=0 ctermfg=108 cterm=bold gui=bold', error_bg, error_fg)
-    execute printf('highlight ErrorFloatBorder guibg=%s guifg=%s ctermbg=0 ctermfg=198 cterm=bold gui=bold', error_bg, border_fg)
-    
-    if exists('g:ruby_ti_debug') && g:ruby_ti_debug
-      echo 'Ruby-TI Debug: Highlights set successfully'
-    endif
+    silent! highlight clear RubyTiWarning
+    silent! highlight clear ErrorFloat  
+    silent! highlight clear ErrorFloatBorder
   catch
-    echo 'Ruby-TI Error: Failed to set highlights - ' . v:exception
   endtry
+  
+  " Define highlights with user colors - use explicit commands
+  execute 'highlight RubyTiWarning ctermfg=' . warning_fg . ' guifg=' . warning_fg . ' cterm=bold gui=bold'
+  execute 'highlight MyMatch cterm=underline'
+  execute 'highlight ErrorFloat guibg=' . error_bg . ' guifg=' . error_fg . ' ctermbg=0 ctermfg=108 cterm=bold gui=bold'
+  execute 'highlight ErrorFloatBorder guibg=' . error_bg . ' guifg=' . border_fg . ' ctermbg=0 ctermfg=198 cterm=bold gui=bold'
+  
+  if exists('g:ruby_ti_debug') && g:ruby_ti_debug
+    echo 'Ruby-TI Debug: Highlights set successfully'
+  endif
 endfunction
 
 function! ruby_ti#ui#echo_warning(message)

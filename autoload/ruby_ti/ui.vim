@@ -2,7 +2,7 @@
 
 function! ruby_ti#ui#setup_highlights()
   highlight RubyTiWarning ctermfg=Yellow guifg=Yellow cterm=bold gui=bold
-  highlight MyMatch cterm=underline
+  highlight RubyTiMatch cterm=underline
   highlight ErrorFloat guibg=#000a1a guifg=#00ff88 ctermbg=0 ctermfg=108 cterm=bold gui=bold
   highlight ErrorFloatBorder guibg=#000a1a guifg=#ff0088 ctermbg=0 ctermfg=198 cterm=bold gui=bold
 endfunction
@@ -23,7 +23,7 @@ function! ruby_ti#ui#highlight_error_line(line_number)
   endif
   
   if a:line_number > 0
-    execute 'match MyMatch /\%' . a:line_number . 'l/'
+    execute 'match RubyTiMatch /\%' . a:line_number . 'l/'
   else
     execute 'match none'
   endif
@@ -192,8 +192,8 @@ function! s:create_popup_frame(popup_width, inner_width)
   let separator = chars.separator_left . repeat(chars.horizontal, a:inner_width - 1) . chars.separator_right
   
   " Create empty content lines (will be filled by animation)
-  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol . ' ') - 0) . chars.vertical
-  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol . ' ') - 0) . chars.vertical
+  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol . ' ')) . chars.vertical
+  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol . ' ')) . chars.vertical
   
   return [header, empty_error, separator, empty_file, footer_line]
 endfunction

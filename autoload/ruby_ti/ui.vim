@@ -41,7 +41,7 @@ endfunction
 
 function! ruby_ti#ui#show_popup_if_needed()
   let current_line = line('.')
-  let current_file = expand('%:p')
+  let current_file = expand('%@:p')
   let error_line = ruby_ti#state#get_error_info('line_number')
   let error_file = ruby_ti#state#get_error_info('file_path')
   
@@ -56,7 +56,7 @@ function! ruby_ti#ui#show_popup_if_needed()
       echo 'Ruby-TI Debug: Showing popup'
     endif
     call ruby_ti#ui#show_popup()
-  elseif ruby_ti#state#is_popup_visible() && (current_line != error_line || current_file != error_file)
+  elseif ruby_ti#state#is_popup_visible() && current_line != error_line
     call ruby_ti#ui#hide_popup()
   endif
 endfunction
@@ -196,7 +196,7 @@ function! s:create_popup_frame(popup_width, inner_width)
   let title_padding_length = a:inner_width - len(config.title) - 1
   let title_padding = title_padding_length > 0 ? repeat(chars.horizontal, title_padding_length) : ''
   
-  let header = chars.top_left . chars.horizontal . chars.horizontal . chars.horizontal . ' ' . config.title . ' ' . title_padding . chars.top_right
+  let header = chars.top_left . repeat(chars.horizontal, 3) . ' 💎 MRUBY TYPE ANALYSIS 💎 ' . repeat(chars.horizontal, a:inner_width - 31) . chars.top_right
   
   let footer_content = chars.footer_left . ' ' . config.footer . ' ' . chars.footer_right
   let footer_padding_length = a:inner_width - len(footer_content) - 14
@@ -206,8 +206,8 @@ function! s:create_popup_frame(popup_width, inner_width)
   let separator = chars.separator_left . repeat(chars.horizontal, a:inner_width - 1) . chars.separator_right
   
   " Create empty content lines (will be filled by animation)
-  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol) - 3) . chars.vertical
-  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol) - 3) . chars.vertical
+  let empty_error = chars.vertical . ' ' . config.error_symbol . ' ' . repeat(' ', a:inner_width - len(config.error_symbol) - 0) . chars.vertical
+  let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol) - 0) . chars.vertical
   
   return [header, empty_error, separator, empty_file, footer_line]
 endfunction

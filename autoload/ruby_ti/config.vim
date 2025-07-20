@@ -10,7 +10,7 @@ let s:config = {
   \ 'enable_animation': 1,
   \ 'enable_line_highlighting': 1,
   \ 'popup_style': {
-  \   'title': '💎 MRUBY TYPE ANALYSIS 💎',
+  \   'title': '🔍 Ruby Type Error',
   \   'footer': 'RUBY-TI',
   \   'error_symbol': '▸',
   \   'file_symbol': '◉',

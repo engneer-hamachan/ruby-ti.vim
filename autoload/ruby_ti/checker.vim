@@ -48,7 +48,7 @@ endfunction
 
 function! s:on_checker_complete(job_id, data, event)
   let output = join(a:data, "\n")
-  let current_file = expand('%:p')
+  let current_file = expand('%@:p')
   
   " Skip if no meaningful output
   if empty(output) || output ==# "\n"

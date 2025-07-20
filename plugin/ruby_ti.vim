@@ -31,10 +31,10 @@ augroup RubyTi
   autocmd!
   autocmd BufRead *.* call ruby_ti#state#reset()
   autocmd BufWinEnter *.* call ruby_ti#state#reset()
-  autocmd BufWritePost *.rb call timer_start(100, function('s:delayed_checker_run'))
-  autocmd BufReadPost *.rb call timer_start(200, function('s:delayed_checker_run'))
-  autocmd BufWinEnter *.rb call timer_start(300, function('s:delayed_checker_run'))
-  autocmd CursorMoved *.rb call timer_start(50, function('s:delayed_popup_check'))
+  autocmd BufWritePost *.rb call timer_start(0, function('s:delayed_checker_run'))
+  autocmd BufReadPost *.rb call timer_start(0, function('s:delayed_checker_run'))
+  autocmd BufWinEnter *.rb call timer_start(0, function('s:delayed_checker_run'))
+  autocmd CursorMoved *.rb call timer_start(0, function('s:delayed_popup_check'))
 augroup END
 
 " Delayed popup check to avoid immediate empty popups

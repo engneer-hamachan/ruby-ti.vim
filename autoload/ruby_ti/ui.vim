@@ -40,6 +40,7 @@ function! ruby_ti#ui#show_popup_if_needed()
   if ruby_ti#state#is_popup_visible() && 
      \ (current_line != error_line || error_line <= 0 || empty(error_message))
     call ruby_ti#ui#hide_popup()
+    call ruby_ti#ui#clear_status()
     return
   endif
   
@@ -48,6 +49,7 @@ function! ruby_ti#ui#show_popup_if_needed()
      \ error_line > 0 && !empty(error_message) && !empty(error_file) &&
      \ !ruby_ti#state#is_popup_visible()
     call ruby_ti#ui#show_popup()
+    call ruby_ti#ui#show_status(error_message)
   endif
 endfunction
 
@@ -146,6 +148,9 @@ function! ruby_ti#ui#hide_popup()
   
   " Always reset popup state regardless of previous state
   call ruby_ti#state#set_popup_window(-1, 0)
+  
+  " Clear status bar
+  call ruby_ti#ui#clear_status()
 endfunction
 
 function! s:calculate_popup_dimensions(error_text, file_text)
@@ -196,4 +201,18 @@ function! s:create_popup_frame(popup_width, inner_width)
   let empty_file = chars.vertical . ' ' . config.file_symbol . ' ' . repeat(' ', a:inner_width - len(config.file_symbol . ' ')) . chars.vertical
   
   return [header, empty_error, separator, empty_file, footer_line]
+endfunction
+
+function! ruby_ti#ui#show_status(message)
+  if empty(a:message)
+    return
+  endif
+  
+  echohl RubyTiWarning
+  echo 'Ruby-TI Error: ' . a:message
+  echohl None
+endfunction
+
+function! ruby_ti#ui#clear_status()
+  echo ''
 endfunction

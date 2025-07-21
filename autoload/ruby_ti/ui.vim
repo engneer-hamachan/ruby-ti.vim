@@ -40,7 +40,6 @@ function! ruby_ti#ui#show_popup_if_needed()
   if ruby_ti#state#is_popup_visible() && 
      \ (current_line != error_line || error_line <= 0 || empty(error_message))
     call ruby_ti#ui#hide_popup()
-    call ruby_ti#ui#clear_status()
     return
   endif
   
@@ -49,7 +48,6 @@ function! ruby_ti#ui#show_popup_if_needed()
      \ error_line > 0 && !empty(error_message) && !empty(error_file) &&
      \ !ruby_ti#state#is_popup_visible()
     call ruby_ti#ui#show_popup()
-    call ruby_ti#ui#show_status(error_message)
   endif
 endfunction
 
@@ -148,9 +146,6 @@ function! ruby_ti#ui#hide_popup()
   
   " Always reset popup state regardless of previous state
   call ruby_ti#state#set_popup_window(-1, 0)
-  
-  " Clear status bar
-  call ruby_ti#ui#clear_status()
 endfunction
 
 function! s:calculate_popup_dimensions(error_text, file_text)

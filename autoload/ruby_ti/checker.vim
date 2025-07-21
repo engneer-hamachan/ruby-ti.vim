@@ -64,24 +64,25 @@ function! s:on_checker_complete(job_id, data, event)
   " Store error information
   call ruby_ti#state#set_error_info(error_info)
   
+  " Always show status bar message for any error
+  call ruby_ti#ui#show_status(error_info.message . ' (' . error_info.filename . ')')
+  
   " Apply visual feedback if error is in current file
   if current_file ==# error_info.file_path
     call ruby_ti#ui#highlight_error_line(error_info.line_number)
     
     " Show popup if cursor is on error line (use the safe check function)
     call ruby_ti#ui#show_popup_if_needed()
-  else
-    " Show status bar message for errors in other files
-    call ruby_ti#ui#show_status(error_info.message . ' (' . error_info.filename . ')')
   endif
 endfunction
 
 function! s:on_checker_exit(job_id, exit_code, event)
-  " If no error was found (or no valid error was parsed), clear highlights
+  " If no error was found (or no valid error was parsed), clear highlights and status
   let error_info = ruby_ti#state#get_error_info('message')
   if empty(error_info)
     call ruby_ti#ui#highlight_error_line(-1)
     call ruby_ti#ui#hide_popup()
+    call ruby_ti#ui#clear_status()
   endif
 endfunction
 
